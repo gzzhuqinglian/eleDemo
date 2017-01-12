@@ -4,13 +4,16 @@
 		display:flex;
 		.select_con{
 			width:80px;
-			padding-left:20px;
 			li{
+				padding-left:20px;
 				border-bottom:1px solid #e5e5e5;
 				font-size:13px;
 				height:60px;
 				line-height:60px;
 				position: relative;
+			}
+			.active{
+				background-color:#fff;
 			}
 		}
 		.content_con{
@@ -163,14 +166,14 @@
 		<div class='container'>
 			<div class='select_con'>
 					<ul>
-						<li v-for="item in goods">
+						<li :class="{active:item.isactive}" v-for="(item, index) in goods" @click='go(index)'>
 							<span>{{item.title}}</span>
 							<span class='type_num' v-show="item.buy>0">{{item.buy}}</span>
 						</li>
 					</ul>
 			</div>
 			<div class='content_con'>
-				<ul class='goods_con' v-bind:style="{ height: height + 'px' }">
+				<ul id='goods_con' @scroll="handleScroll" class='goods_con' v-bind:style="{ height: height + 'px' }">
 						<li class='goods_item' v-for='good in goods'>
 							<div class='title'>{{good.title}}</div>
 							<div class='content' v-for='item in good.items'>
@@ -226,12 +229,35 @@
     			good.buy=good.buy+1;
     			console.log(good.title)
     		},
+    		handleScroll(){
+    			var top=document.getElementById("goods_con").scrollTop
+    			// for(var i=0;i<this.goods.length;i++){
+    			// 	if(top>this.goods[i].items.length*107+22){
+    			// 		this.goods[i+1].isactive=true;
+    			// 	}else{
+    			// 		this.goods[i+1].isactive=false;
+    			// 	}
+    			// }
+    			// if()
+    			// console.log(document.getElementById("goods_con").scrollTop);
+    		},
     		jsscart(item,good){
     			this.totalprice=this.totalprice-item.price;
     			item.buy=item.buy-1;
     			this.totalnum=this.totalnum-1;
     			good.buy=good.buy-1;
     			console.log(good.title)
+    		},
+    		go(index){
+    			var totalscro=0;
+    			for(var i=0;i<index;i++){
+    				totalscro=totalscro+this.goods[i].items.length*107+22
+    			}
+    			document.getElementById("goods_con").scrollTop=totalscro;
+    			for(var i=0;i<this.goods.length;i++){
+    				this.goods[i].isactive=false;
+    			}
+    			this.goods[index].isactive=true;
     		}
     	},
         data(){
@@ -240,7 +266,7 @@
         		totalnum:0,
         		active_go:false,
         		 goods:[
-        		 	{title:'热销榜',buy:0,items:[
+        		 	{title:'热销榜',isactive:true,buy:0,items:[
         		 		{
         		 			img:img,
         		 			title:'梅干菜扣肉套餐',
@@ -280,7 +306,7 @@
 
         		 	]},
         		 	
-        		 	{title:'副食小吃',buy:0,items:[
+        		 	{title:'副食小吃',buy:0,isactive:false,items:[
         		 		{
         		 			img:img,
         		 			title:'梅干菜扣肉套餐',
@@ -318,7 +344,7 @@
         		 			buy:0
         		 		}]
         		 	},
-        		 	{title:'招牌套餐',buy:0,items:[
+        		 	{title:'招牌套餐',buy:0,isactive:false,items:[
         		 		{
         		 			img:img,
         		 			title:'梅干菜扣肉套餐',
