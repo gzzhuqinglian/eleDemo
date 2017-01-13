@@ -3,7 +3,7 @@
 > vuejs+vux+vuex+router
 
 ### 链接
-1.[点击这里你可以查看demo](https://gzzhuqinglian.github.io/vuedemo/#/index)
+1.[点击这里你可以查看demo](https://gzzhuqinglian.github.io/eledemo/#/index)
 
 vuedemo 特性
 -----------------------------------
